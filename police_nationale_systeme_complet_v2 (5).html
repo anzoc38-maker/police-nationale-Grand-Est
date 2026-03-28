@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root { --anthracite:#141820; --bleu-vif:#1244B8; --bleu-ciel:#4A90D9; --argent-clair:#DCE6EF; --blanc:#F2F5F9; --gris:#6A7A8A; }
+body { background:#080808; display:flex; align-items:flex-start; justify-content:center; min-height:100vh; font-family:'Barlow',sans-serif; }
+
+.view { display:none; width:100%; }
+.view.active { display:block; }
+
+/* ======= POSTER ======= */
+.poster { width:794px; min-height:1123px; background:var(--anthracite); position:relative; overflow:hidden; box-shadow:0 40px 120px rgba(0,0,0,0.95); margin:0 auto; }
+.poster::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,0.01) 2px,rgba(255,255,255,0.01) 4px),radial-gradient(ellipse at 15% 85%,rgba(0,49,137,0.18) 0%,transparent 55%),radial-gradient(ellipse at 85% 15%,rgba(18,68,184,0.1) 0%,transparent 55%); z-index:0; }
+.bg-emblem { position:absolute; right:-40px; top:50%; transform:translateY(-50%); font-size:420px; color:rgba(0,49,137,0.07); z-index:0; line-height:1; pointer-events:none; }
+.bar-top { position:absolute; top:0; left:0; right:0; height:6px; background:linear-gradient(90deg,#002395 33.33%,#F5F5F5 33.33%,#F5F5F5 66.66%,#ED2939 66.66%); z-index:10; }
+.bar-bot { position:absolute; bottom:0; left:0; right:0; height:6px; background:linear-gradient(90deg,#002395 33.33%,#F5F5F5 33.33%,#F5F5F5 66.66%,#ED2939 66.66%); z-index:10; }
+.side-acc { position:absolute; left:0; top:0; bottom:0; width:5px; background:linear-gradient(180deg,#002395 33.33%,#F5F5F5 33.33%,#F5F5F5 66.66%,#ED2939 66.66%); z-index:10; }
+.pc { position:relative; z-index:5; padding:0 60px 60px 65px; }
+.ph { display:flex; align-items:center; justify-content:space-between; padding:30px 0 24px 0; border-bottom:1px solid rgba(0,49,137,0.4); }
+.phl { display:flex; align-items:center; gap:18px; }
+.plogo { width:64px; height:72px; flex-shrink:0; }
+.plogo svg { width:100%; height:100%; filter:drop-shadow(0 0 10px rgba(0,49,137,0.6)); }
+.prep { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:3px; color:var(--bleu-ciel); text-transform:uppercase; margin-bottom:2px; }
+.pmin { font-family:'Barlow Condensed',sans-serif; font-size:13px; color:rgba(242,245,249,0.65); letter-spacing:1px; }
+.phr { text-align:right; display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+.pvil { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:4px; color:var(--argent-clair); }
+.preg { font-size:10px; color:var(--gris); letter-spacing:2px; text-transform:uppercase; }
+.btn-cx { background:transparent; border:1px solid rgba(74,144,217,0.5); color:var(--bleu-ciel); font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:6px 14px; cursor:pointer; transition:all 0.25s; }
+.btn-cx:hover { background:rgba(74,144,217,0.12); border-color:var(--bleu-ciel); color:var(--blanc); }
+.phero { padding:50px 0 40px 0; }
+.phl2 { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:600; letter-spacing:5px; color:var(--bleu-ciel); text-transform:uppercase; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+.phl2::before { content:''; display:inline-block; width:30px; height:1px; background:var(--bleu-ciel); }
+.phtit { font-family:'Bebas Neue',sans-serif; font-size:90px; line-height:0.9; color:var(--blanc); letter-spacing:2px; }
+.phtit span { color:var(--bleu-ciel); display:block; }
+.phsub { font-family:'Barlow Condensed',sans-serif; font-size:26px; font-weight:600; color:rgba(242,245,249,0.5); letter-spacing:6px; text-transform:uppercase; margin-top:8px; }
+.pmot { background:rgba(0,49,137,0.12); border-left:3px solid var(--bleu-vif); padding:16px 24px; margin-bottom:42px; }
+.pmott { font-size:18px; font-style:italic; font-weight:300; color:var(--argent-clair); letter-spacing:1px; }
+.pmott strong { font-weight:600; font-style:normal; color:var(--blanc); }
+.psl { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:4px; color:var(--bleu-ciel); text-transform:uppercase; margin-bottom:18px; display:flex; align-items:center; gap:12px; }
+.psl::after { content:''; flex:1; height:1px; background:rgba(0,49,137,0.3); }
+.ppg { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:40px; }
+.ppc { background:rgba(255,255,255,0.03); border:1px solid rgba(0,49,137,0.25); padding:20px 18px; position:relative; }
+.ppc::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:var(--bleu-vif); opacity:0.6; }
+.ppci { font-size:22px; margin-bottom:10px; }
+.ppct { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; color:var(--blanc); letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+.ppcd { font-size:11.5px; color:rgba(242,245,249,0.5); line-height:1.5; }
+.preqs { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:40px; }
+.preq { display:flex; align-items:flex-start; gap:12px; }
+.preqb { width:6px; height:6px; background:var(--bleu-ciel); margin-top:6px; flex-shrink:0; transform:rotate(45deg); }
+.preqt { font-size:13px; color:rgba(242,245,249,0.65); line-height:1.5; }
+.preqt strong { color:var(--blanc); font-weight:600; }
+.pcta { background:linear-gradient(135deg,rgba(0,49,137,0.18),rgba(0,49,137,0.06)); border:1px solid rgba(0,49,137,0.4); padding:28px 32px; display:flex; align-items:center; justify-content:space-between; gap:24px; margin-bottom:36px; }
+.pctall { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:3px; color:var(--bleu-ciel); text-transform:uppercase; margin-bottom:6px; }
+.pctati { font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--blanc); letter-spacing:2px; }
+.pctain { font-size:13px; color:rgba(242,245,249,0.55); margin-top:4px; }
+.btn-cand { background:var(--bleu-vif); color:#fff; font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:14px 28px; border:none; cursor:pointer; white-space:nowrap; flex-shrink:0; transition:background 0.2s; }
+.btn-cand:hover { background:#1a55d0; }
+.pfoot { display:flex; align-items:center; justify-content:space-between; padding-top:24px; border-top:1px solid rgba(0,49,137,0.25); }
+.pfi { font-size:11px; color:rgba(242,245,249,0.3); letter-spacing:0.5px; line-height:1.6; }
+.ptri { display:flex; height:20px; }
+.ptri span { width:14px; height:20px; display:block; }
+.ptri span:nth-child(1){background:#002395;} .ptri span:nth-child(2){background:#EDEDED;} .ptri span:nth-child(3){background:#ED2939;}
+
+/* ======= OVERLAYS COMMUNS ======= */
+.overlay { position:fixed; inset:0; z-index:99999; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity 0.35s; }
+.overlay.active { opacity:1; pointer-events:all; }
+.ov-back { position:fixed; inset:0; background:rgba(8,8,8,0.92); }
+.ov-panel { position:relative; z-index:2; background:#141820; border:1px solid rgba(0,49,137,0.4); box-shadow:0 40px 80px rgba(0,0,0,0.8); transform:translateY(20px) scale(0.97); transition:transform 0.35s,opacity 0.35s; opacity:0; overflow:hidden; }
+.overlay.active .ov-panel { transform:translateY(0) scale(1); opacity:1; }
+.ov-topbar { height:4px; background:linear-gradient(90deg,#002395 33.33%,#F5F5F5 33.33%,#F5F5F5 66.66%,#ED2939 66.66%); }
+.ov-body { padding:36px 40px 40px; }
+.ov-badge { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+.ov-badge-icon { width:36px; height:36px; background:rgba(0,49,137,0.2); border:1px solid rgba(74,144,217,0.3); display:flex; align-items:center; justify-content:center; font-size:16px; }
+.ov-rep { font-family:'Barlow Condensed',sans-serif; font-size:9px; font-weight:600; letter-spacing:3px; color:var(--bleu-ciel); text-transform:uppercase; }
+.ov-svc { font-family:'Barlow Condensed',sans-serif; font-size:12px; color:rgba(242,245,249,0.5); }
+.ov-title { font-family:'Bebas Neue',sans-serif; font-size:34px; color:var(--blanc); letter-spacing:2px; line-height:1; }
+.ov-sub { font-size:12px; color:var(--gris); letter-spacing:1px; margin-top:4px; }
+.ov-div { height:1px; background:rgba(0,49,137,0.25); margin:20px 0 24px; }
+.fl { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:3px; color:var(--bleu-ciel); text-transform:uppercase; display:block; margin-bottom:8px; }
+.fi { width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(0,49,137,0.3); color:var(--blanc); font-family:'Barlow',sans-serif; font-size:14px; padding:11px 14px; outline:none; transition:border-color 0.2s; }
+.fi::placeholder { color:rgba(242,245,249,0.2); }
+.fi:focus { border-color:rgba(74,144,217,0.6); background:rgba(255,255,255,0.06); }
+.fi.err { border-color:rgba(237,41,57,0.7); }
+.fg { margin-bottom:18px; }
+.fgrid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.fe { font-size:11px; color:#ED2939; margin-top:5px; display:none; }
+.fe.show { display:block; }
+.err-box { font-size:12px; color:#ED2939; padding:10px 14px; background:rgba(237,41,57,0.08); border-left:3px solid #ED2939; margin-bottom:16px; display:none; }
+.err-box.show { display:block; }
+.btn-main { width:100%; background:var(--bleu-vif); color:#fff; font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:15px; border:none; cursor:pointer; transition:background 0.2s; display:flex; align-items:center; justify-content:center; gap:10px; }
+.btn-main:hover { background:#1a55d0; }
+.btn-main:disabled { opacity:0.6; cursor:not-allowed; }
+.btn-close-ov { position:absolute; top:14px; right:14px; width:28px; height:28px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); color:rgba(242,245,249,0.4); font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; z-index:3; }
+.btn-close-ov:hover { background:rgba(255,255,255,0.1); color:var(--blanc); }
+
+/* Attempts */
+.dots { display:flex; gap:5px; margin-bottom:16px; }
+.dot { width:8px; height:8px; background:rgba(74,144,217,0.4); transform:rotate(45deg); transition:background 0.3s; }
+.dot.used { background:rgba(237,41,57,0.6); }
+
+/* select */
+select.fi { appearance:none; cursor:pointer; }
+
+/* Success screen */
+.success-screen { text-align:center; padding:10px 0 0; }
+.success-icon { font-size:48px; margin-bottom:16px; }
+.success-title { font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--blanc); letter-spacing:2px; margin-bottom:8px; }
+.success-msg { font-size:14px; color:rgba(242,245,249,0.6); line-height:1.7; margin-bottom:24px; }
+.success-id-box { background:rgba(0,49,137,0.12); border:1px solid rgba(74,144,217,0.3); padding:16px 20px; margin-bottom:24px; text-align:left; }
+.success-id-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:3px; color:var(--bleu-ciel); text-transform:uppercase; margin-bottom:4px; }
+.success-id-val { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--blanc); letter-spacing:3px; }
+
+/* ======= DASHBOARD ======= */
+#dashView { background:#0f111a; min-height:100vh; }
+.dtop { background:#141820; border-bottom:1px solid rgba(0,49,137,0.35); padding:0 32px; display:flex; align-items:center; justify-content:space-between; height:60px; }
+.dtop-l { display:flex; align-items:center; gap:14px; }
+.dlogo { width:30px; height:34px; }
+.dlogo svg { width:100%; height:100%; }
+.dbrand { font-family:'Bebas Neue',sans-serif; font-size:20px; letter-spacing:3px; color:var(--blanc); }
+.dbrand span { color:var(--bleu-ciel); }
+.dtop-r { display:flex; align-items:center; gap:14px; }
+.dav { width:32px; height:32px; background:rgba(0,49,137,0.3); border:1px solid rgba(74,144,217,0.4); display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; color:var(--bleu-ciel); }
+.dan { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:600; color:var(--blanc); letter-spacing:1px; }
+.dam { font-size:11px; color:var(--gris); }
+.btn-deco { background:transparent; border:1px solid rgba(237,41,57,0.3); color:rgba(237,41,57,0.7); font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase; padding:6px 14px; cursor:pointer; transition:all 0.25s; }
+.btn-deco:hover { background:rgba(237,41,57,0.08); border-color:rgba(237,41,57,0.6); color:#ED2939; }
+.dbody { padding:28px 32px; }
+.dstats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:28px; }
+.sc { background:#141820; border:1px solid rgba(0,49,137,0.25); padding:18px 20px; position:relative; overflow:hidden; }
+.sc::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; }
+.sc.bl::after{background:var(--bleu-ciel);} .sc.gr::after{background:#1a9e4a;} .sc.or::after{background:#e88c1a;} .sc.rd::after{background:#ED2939;}
+.slb { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:3px; text-transform:uppercase; margin-bottom:8px; }
+.sc.bl .slb{color:var(--bleu-ciel);} .sc.gr .slb{color:#1a9e4a;} .sc.or .slb{color:#e88c1a;} .sc.rd .slb{color:#ED2939;}
+.slv { font-family:'Bebas Neue',sans-serif; font-size:40px; color:var(--blanc); line-height:1; letter-spacing:2px; }
+.dfilters { display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+.dftit { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:3px; color:var(--bleu-ciel); text-transform:uppercase; margin-right:4px; }
+.fb { background:rgba(255,255,255,0.03); border:1px solid rgba(0,49,137,0.25); color:rgba(242,245,249,0.5); font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:1px; text-transform:uppercase; padding:6px 14px; cursor:pointer; transition:all 0.2s; }
+.fb.on,.fb:hover { background:rgba(0,49,137,0.2); border-color:var(--bleu-ciel); color:var(--bleu-ciel); }
+.si { background:rgba(255,255,255,0.04); border:1px solid rgba(0,49,137,0.25); color:var(--blanc); font-family:'Barlow',sans-serif; font-size:13px; padding:7px 14px; outline:none; width:220px; transition:border-color 0.2s; margin-left:auto; }
+.si::placeholder { color:rgba(242,245,249,0.2); }
+.si:focus { border-color:rgba(74,144,217,0.5); }
+.dtw { background:#141820; border:1px solid rgba(0,49,137,0.25); overflow:hidden; }
+.dth { padding:14px 22px; border-bottom:1px solid rgba(0,49,137,0.2); display:flex; align-items:center; justify-content:space-between; }
+.dtht { font-family:'Bebas Neue',sans-serif; font-size:20px; color:var(--blanc); letter-spacing:2px; }
+.dthc { font-size:12px; color:var(--gris); }
+table { width:100%; border-collapse:collapse; }
+thead tr { background:rgba(0,49,137,0.1); }
+thead th { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:3px; color:var(--bleu-ciel); text-transform:uppercase; padding:13px 16px; text-align:left; border-bottom:1px solid rgba(0,49,137,0.3); }
+tbody tr { border-bottom:1px solid rgba(0,49,137,0.12); transition:background 0.15s; }
+tbody tr:hover { background:rgba(255,255,255,0.02); }
+tbody td { padding:13px 16px; font-size:13px; color:rgba(242,245,249,0.75); }
+.cname { color:var(--blanc); font-weight:600; font-size:14px; }
+.cid { font-size:11px; color:var(--gris); margin-top:2px; font-family:'Barlow Condensed',sans-serif; letter-spacing:1px; }
+.disc { font-size:12px; color:var(--bleu-ciel); }
+.badge { display:inline-block; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; padding:3px 10px; }
+.b-gdp{background:rgba(0,49,137,0.25);color:#7aa8e8;border:1px solid rgba(0,49,137,0.4);}
+.b-ofp{background:rgba(26,158,74,0.15);color:#4ecb7f;border:1px solid rgba(26,158,74,0.3);}
+.b-com{background:rgba(232,140,26,0.15);color:#f0a832;border:1px solid rgba(232,140,26,0.3);}
+.sb { display:inline-flex; align-items:center; gap:6px; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; }
+.sb::before { content:''; width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.s-att{color:#e8a21a;background:rgba(232,162,26,0.1);border:1px solid rgba(232,162,26,0.25);}
+.s-att::before{background:#e8a21a;}
+.s-acc{color:#1a9e4a;background:rgba(26,158,74,0.1);border:1px solid rgba(26,158,74,0.25);}
+.s-acc::before{background:#1a9e4a;}
+.s-ref{color:#ED2939;background:rgba(237,41,57,0.1);border:1px solid rgba(237,41,57,0.25);}
+.s-ref::before{background:#ED2939;}
+.s-ent{color:var(--bleu-ciel);background:rgba(74,144,217,0.1);border:1px solid rgba(74,144,217,0.25);}
+.s-ent::before{background:var(--bleu-ciel);}
+.abtn { background:transparent; border:1px solid rgba(74,144,217,0.3); color:var(--bleu-ciel); font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; padding:5px 12px; cursor:pointer; transition:all 0.2s; }
+.abtn:hover { background:rgba(74,144,217,0.1); }
+.nores { text-align:center; padding:40px; color:var(--gris); font-size:14px; }
+.new-badge { display:inline-block; background:rgba(237,41,57,0.15); border:1px solid rgba(237,41,57,0.35); color:#ED2939; font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:2px 8px; margin-left:8px; vertical-align:middle; animation:pulse 1.5s infinite; }
+@keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.5;} }
+.trib { height:4px; background:linear-gradient(90deg,#002395 33.33%,#F5F5F5 33.33%,#F5F5F5 66.66%,#ED2939 66.66%); margin-top:28px; }
+
+.cname-link { cursor:pointer; text-decoration:underline; text-underline-offset:3px; text-decoration-color:rgba(74,144,217,0.4); transition:color 0.2s; }
+.cname-link:hover { color:var(--bleu-ciel); }
+.stat-sel { appearance:none; border:none; cursor:pointer; font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:600; letter-spacing:1px; text-transform:uppercase; padding:4px 10px; outline:none; }
+.stat-sel.s-att{color:#e8a21a;background:rgba(232,162,26,0.1);border:1px solid rgba(232,162,26,0.25);}
+.stat-sel.s-acc{color:#1a9e4a;background:rgba(26,158,74,0.1);border:1px solid rgba(26,158,74,0.25);}
+.stat-sel.s-ref{color:#ED2939;background:rgba(237,41,57,0.1);border:1px solid rgba(237,41,57,0.25);}
+.stat-sel.s-ent{color:var(--bleu-ciel);background:rgba(74,144,217,0.1);border:1px solid rgba(74,144,217,0.25);}
+.stat-sel option { background:#141820; color:var(--blanc); }
+.fiche-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:20px; }
+.fiche-label { font-family:'Barlow Condensed',sans-serif; font-size:10px; font-weight:600; letter-spacing:3px; color:var(--bleu-ciel); text-transform:uppercase; margin-bottom:5px; display:block; }
+.fiche-val { font-size:14px; color:var(--blanc); font-weight:600; background:rgba(255,255,255,0.03); border:1px solid rgba(0,49,137,0.25); padding:10px 14px; }
+.fiche-id-badge { display:inline-block; font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:3px; color:var(--bleu-ciel); background:rgba(0,49,137,0.15); border:1px solid rgba(74,144,217,0.3); padding:4px 12px; margin-bottom:16px; }
+.save-msg { font-size:12px; color:#1a9e4a; transition:opacity 0.5s; opacity:0; font-family:'Barlow Condensed',sans-serif; letter-spacing:1px; white-space:nowrap; }
+
+</style>
+</head>
+<body>
+
+<!-- ===== VUE AFFICHE ===== -->
+<div id="posterView" class="view active">
+<div class="poster">
+  <div class="bar-top"></div><div class="bar-bot"></div><div class="side-acc"></div>
+  <div class="bg-emblem">⚖</div>
+  <div class="pc">
+    <div class="ph">
+      <div class="phl">
+        <div class="plogo"><svg viewBox="0 0 64 72" fill="none"><path d="M32 2L60 14L60 40C60 56 46 68 32 70C18 68 4 56 4 40L4 14Z" fill="#141820" stroke="#1244B8" stroke-width="2"/><clipPath id="s1"><path d="M32 9L53 19L53 40C53 52 43 62 32 64C21 62 11 52 11 40L11 19Z"/></clipPath><rect x="11" y="9" width="14" height="56" fill="#002395" clip-path="url(#s1)" opacity="0.6"/><rect x="25" y="9" width="14" height="56" fill="#F0F0F0" clip-path="url(#s1)" opacity="0.5"/><rect x="39" y="9" width="14" height="56" fill="#ED2939" clip-path="url(#s1)" opacity="0.6"/><circle cx="32" cy="38" r="12" fill="none" stroke="#4A90D9" stroke-width="1.5"/><circle cx="32" cy="38" r="5" fill="#4A90D9"/><text x="32" y="22" font-family="Arial" font-size="7" font-weight="bold" fill="#4A90D9" text-anchor="middle">RF</text></svg></div>
+        <div><div class="prep">République Française</div><div class="pmin">Ministère de l'Intérieur — France Métropolitaine</div></div>
+      </div>
+      <div class="phr">
+        <div class="pvil">GRAND EST</div>
+        <div class="preg">Commissariat de Police Nationale</div>
+        <button class="btn-cx" onclick="openLogin()">⮕ Connexion Commissariat</button>
+      </div>
+    </div>
+    <div class="phero">
+      <div class="phl2">Appel au recrutement</div>
+      <div class="phtit">REJOIGNEZ<span>LA POLICE</span></div>
+      <div class="phsub">Nationale · Grand Est</div>
+    </div>
+    <div class="pmot"><div class="pmott"><strong>« Servir — Protéger — Respecter »</strong> — Au service de la République et des citoyens de Grand Est, chaque jour.</div></div>
+    <div class="psl">Profils recherchés</div>
+    <div class="ppg">
+      <div class="ppc"><div class="ppci">🚨</div><div class="ppct">Gardien de la Paix</div><div class="ppcd">Patrouilles, interventions de terrain, sécurité publique et maintien de l'ordre sur la commune.</div></div>
+      <div class="ppc"><div class="ppci">🔍</div><div class="ppct">Officier de Police</div><div class="ppcd">Direction d'enquêtes judiciaires, encadrement des brigades et coordination des investigations.</div></div>
+      <div class="ppc"><div class="ppci">🏛️</div><div class="ppct">Commissaire de Police</div><div class="ppcd">Commandement du commissariat, pilotage stratégique et liaison avec les autorités judiciaires.</div></div>
+    </div>
+    <div class="psl">Conditions d'accès</div>
+    <div class="preqs">
+      <div class="preq"><div class="preqb"></div><div class="preqt"><strong>Nationalité française</strong> obligatoire</div></div>
+      <div class="preq"><div class="preqb"></div><div class="preqt"><strong>Âge :</strong> 17 à 35 ans selon le grade</div></div>
+      <div class="preq"><div class="preqb"></div><div class="preqt"><strong>Casier judiciaire</strong> vierge (bulletin n°2)</div></div>
+      <div class="preq"><div class="preqb"></div><div class="preqt"><strong>Aptitude physique</strong> et médicale confirmée</div></div>
+      <div class="preq"><div class="preqb"></div><div class="preqt"><strong>Droits civiques</strong> non suspendus</div></div>
+      <div class="preq"><div class="preqb"></div><div class="preqt"><strong>Niveau scolaire</strong> selon le concours visé</div></div>
+    </div>
+    <div class="pcta">
+      <div>
+        <div class="pctall">Comment postuler</div>
+        <div class="pctati">Déposez votre candidature</div>
+        <div class="pctain">Commissariat de Police — Hôtel de Ville, Grand Est · Lun–Ven 9h–17h</div>
+      </div>
+      <button class="btn-cand" onclick="openCandidature()">Candidater →</button>
+    </div>
+    <div class="pfoot">
+      <div class="pfi">Police Nationale de Grand Est · Service Recrutement<br>recrutement@police-nationale.grandest.fr · Poste : 17</div>
+      <div class="ptri"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ===== VUE DASHBOARD ===== -->
+<div id="dashView" class="view">
+  <div class="dtop">
+    <div class="dtop-l">
+      <div class="dlogo"><svg viewBox="0 0 64 72" fill="none"><path d="M32 2L60 14L60 40C60 56 46 68 32 70C18 68 4 56 4 40L4 14Z" fill="#141820" stroke="#1244B8" stroke-width="2"/><clipPath id="s2"><path d="M32 9L53 19L53 40C53 52 43 62 32 64C21 62 11 52 11 40L11 19Z"/></clipPath><rect x="11" y="9" width="14" height="56" fill="#002395" clip-path="url(#s2)" opacity="0.6"/><rect x="25" y="9" width="14" height="56" fill="#F0F0F0" clip-path="url(#s2)" opacity="0.5"/><rect x="39" y="9" width="14" height="56" fill="#ED2939" clip-path="url(#s2)" opacity="0.6"/><circle cx="32" cy="38" r="5" fill="#4A90D9"/></svg></div>
+      <div class="dbrand">POLICE <span>NATIONALE</span> · Grand Est</div>
+    </div>
+    <div class="dtop-r">
+      <div class="dav" id="dashUserInitiales">AD</div>
+      <div><div class="dan" id="dashUserNom">Agent Dupont</div><div class="dam" id="dashUserMat">PN-2025-001</div></div>
+      <button class="btn-deco" onclick="deconnexion()">✕ Déconnexion</button>
+    </div>
+  </div>
+  <div class="dbody">
+    <div class="dstats">
+      <div class="sc bl"><div class="slb">Total candidatures</div><div class="slv" id="stTot">0</div></div>
+      <div class="sc or"><div class="slb">En attente</div><div class="slv" id="stAtt">0</div></div>
+      <div class="sc gr"><div class="slb">Acceptés</div><div class="slv" id="stAcc">0</div></div>
+      <div class="sc rd"><div class="slb">Refusés</div><div class="slv" id="stRef">0</div></div>
+    </div>
+    <div class="dfilters">
+      <span class="dftit">Filtrer :</span>
+      <button class="fb on" onclick="setFilter('tous',this)">Tous</button>
+      <button class="fb" onclick="setFilter('En attente',this)">En attente</button>
+      <button class="fb" onclick="setFilter('Entretien',this)">Entretien</button>
+      <button class="fb" onclick="setFilter('Accepté',this)">Acceptés</button>
+      <button class="fb" onclick="setFilter('Refusé',this)">Refusés</button>
+      <input class="si" id="searchIn" type="text" placeholder="Rechercher un candidat…" oninput="renderTable()">
+    </div>
+    <div class="dtw">
+      <div class="dth">
+        <div class="dtht">LISTE DES CANDIDATURES</div>
+        <div class="dthc" id="tCount"></div>
+      </div>
+      <table><thead><tr><th>Candidat</th><th>Discord</th><th>Poste demandé</th><th>Date de naissance</th><th>Déposée le</th><th>Statut</th></tr></thead>
+      <tbody id="tBody"></tbody></table>
+    </div>
+    <div class="trib"></div>
+  </div>
+</div>
+
+<!-- ===== OVERLAY LOGIN ===== -->
+<div class="overlay" id="loginOv">
+  <div class="ov-back" onclick="closeLogin()"></div>
+  <div class="ov-panel" style="width:420px;">
+    <div class="ov-topbar"></div>
+    <button class="btn-close-ov" onclick="closeLogin()">✕</button>
+    <div class="ov-body">
+      <div class="ov-badge"><div class="ov-badge-icon">🛡️</div><div><div class="ov-rep">République Française</div><div class="ov-svc">Police Nationale — Commissariat</div></div></div>
+      <div class="ov-title">CONNEXION</div>
+      <div class="ov-sub">Accès réservé aux commissaires</div>
+      <div class="ov-div"></div>
+      <div class="dots"><div class="dot" id="d1"></div><div class="dot" id="d2"></div><div class="dot" id="d3"></div></div>
+      <div class="fg"><label class="fl">Matricule</label><input class="fi" id="lMat" type="text" placeholder="PN-2025-001"></div>
+      <div class="fg"><label class="fl">Mot de passe</label><input class="fi" id="lPwd" type="password" placeholder="••••••••"></div>
+      <div class="err-box" id="lErr"></div>
+      <div style="margin-bottom:24px;"><label class="form-checkbox" style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" style="display:none;"><span style="width:14px;height:14px;border:1px solid rgba(0,49,137,0.4);background:rgba(255,255,255,0.03);transform:rotate(45deg);display:inline-block;"></span><span style="font-size:12px;color:rgba(242,245,249,0.4);">Rester connecté</span></label></div>
+      <button class="btn-main" id="lBtn" onclick="handleLogin()">⮕ &nbsp;Se connecter</button>
+      <div style="margin-top:20px;text-align:center;font-size:10px;color:rgba(242,245,249,0.2);letter-spacing:1px;line-height:1.8;">Accès réservé au personnel autorisé · Art. 323-1 CP</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== OVERLAY CANDIDATURE ===== -->
+<div class="overlay" id="candOv">
+  <div class="ov-back" onclick="closeCandidature()"></div>
+  <div class="ov-panel" style="width:500px;max-height:90vh;overflow-y:auto;">
+    <div class="ov-topbar"></div>
+    <button class="btn-close-ov" onclick="closeCandidature()">✕</button>
+    <div class="ov-body" id="candBody">
+      <!-- Formulaire -->
+      <div id="candForm">
+        <div class="ov-badge"><div class="ov-badge-icon">📋</div><div><div class="ov-rep">République Française</div><div class="ov-svc">Police Nationale — Recrutement</div></div></div>
+        <div class="ov-title">CANDIDATURE</div>
+        <div class="ov-sub">Formulaire de recrutement — Grand Est</div>
+        <div class="ov-div"></div>
+        <div class="fgrid">
+          <div class="fg"><label class="fl">Nom</label><input class="fi" id="cNom" type="text" placeholder="MARTIN"><div class="fe" id="cNomE">Champ requis</div></div>
+          <div class="fg"><label class="fl">Prénom</label><input class="fi" id="cPre" type="text" placeholder="Lucas"><div class="fe" id="cPreE">Champ requis</div></div>
+        </div>
+        <div class="fg"><label class="fl">Date de naissance</label><input class="fi" id="cDdn" type="date"><div class="fe" id="cDdnE">Champ requis</div></div>
+        <div class="fg"><label class="fl">Pseudo Discord</label><input class="fi" id="cDsc" type="text" placeholder="ex : lucas.martin"><div class="fe" id="cDscE">Champ requis</div></div>
+        <div class="fg">
+          <label class="fl">Poste visé</label>
+          <select class="fi" id="cPos">
+            <option value="">— Sélectionner un poste —</option>
+            <option value="Gardien de la Paix">Gardien de la Paix</option>
+            <option value="Officier de Police">Officier de Police</option>
+            <option value="Commissaire de Police">Commissaire de Police</option>
+          </select>
+          <div class="fe" id="cPosE">Veuillez choisir un poste</div>
+        </div>
+        <div class="err-box" id="cErr"></div>
+        <button class="btn-main" id="cBtn" onclick="submitCandidature()">📋 &nbsp;Envoyer ma candidature</button>
+        <div style="margin-top:16px;text-align:center;font-size:11px;color:rgba(242,245,249,0.25);line-height:1.7;">Votre candidature sera examinée par le service de recrutement.<br>Aucun identifiant ne vous sera attribué — les commissaires seuls y ont accès.</div>
+      </div>
+      <!-- Succès -->
+      <div id="candSuccess" style="display:none;">
+        <div class="success-screen">
+          <div class="success-icon">✅</div>
+          <div class="success-title">CANDIDATURE ENVOYÉE</div>
+          <div class="success-msg">Votre dossier a bien été transmis au service de recrutement de la Police Nationale — Grand Est.<br>Vous serez contacté via Discord.</div>
+          <div class="success-id-box">
+            <div class="success-id-label">Numéro de dossier</div>
+            <div class="success-id-val" id="dosNum">—</div>
+          </div>
+          <button class="btn-main" onclick="closeCandidature()">Fermer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const COMPTES = [
+  { mat:'PN-2025-001', pwd:'PNDGE',   nom:'Agent Dupont',     initiales:'AD', grade:'Commissaire Principal' },
+  { mat:'PN-2025-002', pwd:'PNOFF2',  nom:'Inspecteur Morel', initiales:'IM', grade:'Officier de Police' },
+  { mat:'PN-2025-003', pwd:'PNGDP3',  nom:'Gardien Lefèvre',  initiales:'GL', grade:'Gardien de la Paix' },
+];
+let currentUser=null, tentatives=0, bloque=false, filtre='tous';
+const STORAGE_KEY = 'pn_grandest_candidatures';
+const COUNTER_KEY = 'pn_grandest_counter';
+
+// Candidatures de démonstration par défaut
+const DEFAULT_CANDIDATS = [
+  {id:'C-001',nom:'MARTIN',prenom:'Lucas',ddn:'2002-06-15',discord:'lucas.martin',poste:'Gardien de la Paix',date:'2025-03-04',statut:'En attente',isNew:false},
+  {id:'C-002',nom:'DUBOIS',prenom:'Emma',ddn:'1998-11-23',discord:'emma.dubois',poste:'Officier de Police',date:'2025-03-06',statut:'Entretien',isNew:false},
+  {id:'C-003',nom:'BERNARD',prenom:'Thomas',ddn:'1994-03-08',discord:'thomas.b',poste:'Commissaire de Police',date:'2025-03-07',statut:'Accepté',isNew:false},
+  {id:'C-004',nom:'PETIT',prenom:'Chloé',ddn:'2003-07-19',discord:'chloe_petit',poste:'Gardien de la Paix',date:'2025-03-08',statut:'Refusé',isNew:false},
+  {id:'C-005',nom:'ROBERT',prenom:'Antoine',ddn:'1996-09-30',discord:'ant.robert',poste:'Officier de Police',date:'2025-03-09',statut:'En attente',isNew:false},
+];
+
+// ── Chargement persistant via window.storage ──
+let candidats = [];
+let cCounter = 6;
+
+async function loadData() {
+  try {
+    const res = await window.storage.get(STORAGE_KEY, true);
+    candidats = res ? JSON.parse(res.value) : JSON.parse(JSON.stringify(DEFAULT_CANDIDATS));
+  } catch(e) {
+    candidats = JSON.parse(JSON.stringify(DEFAULT_CANDIDATS));
+  }
+  try {
+    const res2 = await window.storage.get(COUNTER_KEY, true);
+    cCounter = res2 ? parseInt(res2.value) : 6;
+  } catch(e) { cCounter = 6; }
+}
+
+async function saveData() {
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify(candidats), true);
+    await window.storage.set(COUNTER_KEY, String(cCounter), true);
+  } catch(e) { console.warn('Sauvegarde échouée:', e); }
+}
+
+// ── Utilitaires ──
+function fmtDate(d){if(!d)return'—';const[y,m,j]=d.split('-');return`${j}/${m}/${y}`;}
+function fmtDdn(d){return fmtDate(d);}
+function posteClass(p){return p.includes('Gardien')?'b-gdp':p.includes('Officier')?'b-ofp':'b-com';}
+function statClass(s){return{['En attente']:'s-att',['Accepté']:'s-acc',['Refusé']:'s-ref',['Entretien']:'s-ent'}[s]||'';}
+
+function computeStats(){
+  document.getElementById('stTot').textContent=candidats.length;
+  document.getElementById('stAtt').textContent=candidats.filter(c=>c.statut==='En attente').length;
+  document.getElementById('stAcc').textContent=candidats.filter(c=>c.statut==='Accepté').length;
+  document.getElementById('stRef').textContent=candidats.filter(c=>c.statut==='Refusé').length;
+}
+
+function renderTable(){
+  const q=document.getElementById('searchIn').value.toLowerCase();
+  let list=candidats.filter(c=>{
+    const mf=filtre==='tous'||c.statut===filtre;
+    const ms=!q||(c.nom+' '+c.prenom+' '+c.discord+' '+c.id).toLowerCase().includes(q);
+    return mf&&ms;
+  });
+  document.getElementById('tCount').textContent=list.length+' candidature(s)';
+  const tb=document.getElementById('tBody');
+  if(!list.length){tb.innerHTML='<tr><td colspan="6" class="nores">Aucun résultat trouvé.</td></tr>';return;}
+  tb.innerHTML=list.map(c=>`
+    <tr>
+      <td><div class="cname cname-link" onclick="openFiche('${c.id}')">${c.prenom} ${c.nom}${c.isNew?'<span class="new-badge">NOUVEAU</span>':''}</div><div class="cid">${c.id}</div></td>
+      <td><div class="disc">${c.discord}</div></td>
+      <td><span class="badge ${posteClass(c.poste)}">${c.poste}</span></td>
+      <td>${fmtDdn(c.ddn)}</td>
+      <td>${fmtDate(c.date)}</td>
+      <td><select class="stat-sel ${statClass(c.statut)}" onchange="changeStatut('${c.id}',this)">
+        <option ${c.statut==='En attente'?'selected':''}>En attente</option>
+        <option ${c.statut==='Entretien'?'selected':''}>Entretien</option>
+        <option ${c.statut==='Accepté'?'selected':''}>Accepté</option>
+        <option ${c.statut==='Refusé'?'selected':''}>Refusé</option>
+      </select></td>
+    </tr>
+  `).join('');
+}
+
+function setFilter(f,btn){
+  filtre=f;
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTable();
+}
+
+function showDash(){
+  document.getElementById('posterView').classList.remove('active');
+  document.getElementById('dashView').classList.add('active');
+  if(currentUser){
+    document.getElementById('dashUserInitiales').textContent=currentUser.initiales;
+    document.getElementById('dashUserNom').textContent=currentUser.nom;
+    document.getElementById('dashUserMat').textContent=currentUser.mat+' · '+currentUser.grade;
+  }
+  computeStats(); renderTable();
+}
+
+function deconnexion(){
+  document.getElementById('dashView').classList.remove('active');
+  document.getElementById('posterView').classList.add('active');
+  tentatives=0; bloque=false; currentUser=null;
+}
+
+async function changeStatut(id,sel){
+  const c=candidats.find(x=>x.id===id);
+  if(c){c.statut=sel.value; sel.className='stat-sel '+statClass(c.statut);}
+  computeStats();
+  await saveData();
+}
+
+function openFiche(id){
+  const c=candidats.find(x=>x.id===id);
+  if(!c)return;
+  c.isNew=false;
+  document.getElementById('ficheId').textContent=c.id;
+  document.getElementById('ficheNom').textContent=c.prenom+' '+c.nom;
+  document.getElementById('fichePoste').textContent=c.poste;
+  document.getElementById('ficheDiscord').textContent=c.discord;
+  document.getElementById('ficheDdn').textContent=fmtDdn(c.ddn);
+  document.getElementById('ficheDate').textContent=fmtDate(c.date);
+  const sel=document.getElementById('ficheStatut');
+  sel.value=c.statut;
+  sel.className='fi stat-sel '+statClass(c.statut);
+  document.getElementById('ficheOv').classList.add('active');
+  saveData();
+}
+
+function closeFiche(){
+  document.getElementById('ficheOv').classList.remove('active');
+  computeStats(); renderTable();
+}
+
+async function saveFicheStatut(){
+  const id=document.getElementById('ficheId').textContent;
+  const c=candidats.find(x=>x.id===id);
+  const sel=document.getElementById('ficheStatut');
+  if(c){c.statut=sel.value; sel.className='fi stat-sel '+statClass(c.statut);}
+  document.getElementById('ficheSaveMsg').style.opacity='1';
+  setTimeout(()=>document.getElementById('ficheSaveMsg').style.opacity='0',2000);
+  computeStats(); renderTable();
+  await saveData();
+}
+
+/* ── LOGIN ── */
+function openLogin(){
+  document.getElementById('loginOv').classList.add('active');
+  setTimeout(()=>document.getElementById('lMat').focus(),300);
+}
+function closeLogin(){ document.getElementById('loginOv').classList.remove('active'); }
+function updateDots(){ for(let i=1;i<=3;i++) document.getElementById('d'+i).classList.toggle('used',i<=tentatives); }
+
+function handleLogin(){
+  if(bloque)return;
+  const mat=document.getElementById('lMat').value.trim(), pwd=document.getElementById('lPwd').value;
+  const btn=document.getElementById('lBtn'), err=document.getElementById('lErr');
+  err.classList.remove('show');
+  if(!mat||!pwd){err.textContent='⚠ Veuillez remplir tous les champs.';err.classList.add('show');return;}
+  btn.disabled=true; btn.textContent='Vérification…';
+  setTimeout(()=>{
+    const compte=COMPTES.find(c=>c.mat===mat&&c.pwd===pwd);
+    if(compte){
+      currentUser=compte;
+      btn.textContent='✓ Accès accordé'; btn.style.background='#1a6e3a';
+      setTimeout(()=>{
+        closeLogin(); showDash();
+        btn.disabled=false; btn.textContent='⮕  Se connecter'; btn.style.background='';
+        document.getElementById('lMat').value=''; document.getElementById('lPwd').value='';
+      },1100);
+    } else {
+      tentatives++; updateDots();
+      document.getElementById('lMat').classList.add('err');
+      document.getElementById('lPwd').value='';
+      if(tentatives>=3){bloque=true;err.textContent='🔒 Accès bloqué — 3 tentatives échouées.';err.classList.add('show');btn.textContent='🔒 Bloqué';btn.style.background='#5a1a1a';}
+      else{const r=3-tentatives;err.textContent=`⚠ Identifiants incorrects. ${r} tentative${r>1?'s':''} restante${r>1?'s':''}.`;err.classList.add('show');btn.disabled=false;btn.textContent='⮕  Se connecter';}
+    }
+  },900);
+}
+
+/* ── CANDIDATURE ── */
+function openCandidature(){
+  document.getElementById('candForm').style.display='block';
+  document.getElementById('candSuccess').style.display='none';
+  ['cNom','cPre','cDdn','cDsc','cPos'].forEach(id=>{document.getElementById(id).classList.remove('err');document.getElementById(id).value='';});
+  ['cNomE','cPreE','cDdnE','cDscE','cPosE'].forEach(id=>document.getElementById(id).classList.remove('show'));
+  document.getElementById('cErr').classList.remove('show');
+  const btn=document.getElementById('cBtn');btn.disabled=false;btn.textContent='📋  Envoyer ma candidature';btn.style.background='';
+  document.getElementById('candOv').classList.add('active');
+}
+function closeCandidature(){ document.getElementById('candOv').classList.remove('active'); }
+
+async function submitCandidature(){
+  const nom=document.getElementById('cNom').value.trim();
+  const pre=document.getElementById('cPre').value.trim();
+  const ddn=document.getElementById('cDdn').value;
+  const dsc=document.getElementById('cDsc').value.trim();
+  const pos=document.getElementById('cPos').value;
+  let ok=true;
+  [['cNom',nom,'cNomE'],['cPre',pre,'cPreE'],['cDdn',ddn,'cDdnE'],['cDsc',dsc,'cDscE']].forEach(([id,val,eid])=>{
+    if(!val){document.getElementById(id).classList.add('err');document.getElementById(eid).classList.add('show');ok=false;}
+    else{document.getElementById(id).classList.remove('err');document.getElementById(eid).classList.remove('show');}
+  });
+  if(!pos){document.getElementById('cPos').classList.add('err');document.getElementById('cPosE').classList.add('show');ok=false;}
+  else{document.getElementById('cPos').classList.remove('err');document.getElementById('cPosE').classList.remove('show');}
+  if(!ok)return;
+  const btn=document.getElementById('cBtn');btn.disabled=true;btn.textContent='Envoi en cours…';
+  setTimeout(async ()=>{
+    const today=new Date();
+    const dateStr=today.toISOString().split('T')[0];
+    const newId='C-'+(String(cCounter).padStart(3,'0')); cCounter++;
+    const nouveau={id:newId,nom:nom.toUpperCase(),prenom:pre,ddn,discord:dsc,poste:pos,date:dateStr,statut:'En attente',isNew:true};
+    candidats.unshift(nouveau);
+    await saveData();
+    document.getElementById('dosNum').textContent=newId;
+    document.getElementById('candForm').style.display='none';
+    document.getElementById('candSuccess').style.display='block';
+  },900);
+}
+
+/* ── Init au chargement ── */
+document.addEventListener('DOMContentLoaded', async ()=>{
+  await loadData();
+});
+</script>
+
+<!-- OVERLAY FICHE CANDIDAT -->
+<div class="overlay" id="ficheOv">
+  <div class="ov-back" onclick="closeFiche()"></div>
+  <div class="ov-panel" style="width:560px;max-height:92vh;overflow-y:auto;">
+    <div class="ov-topbar"></div>
+    <button class="btn-close-ov" onclick="closeFiche()">✕</button>
+    <div class="ov-body">
+      <div class="ov-badge">
+        <div class="ov-badge-icon">👤</div>
+        <div><div class="ov-rep">République Française</div><div class="ov-svc">Police Nationale — Dossier Candidat</div></div>
+      </div>
+      <div class="ov-title" id="ficheNom">—</div>
+      <div class="fiche-id-badge" id="ficheId">—</div>
+      <div class="ov-div"></div>
+      <div class="fiche-grid">
+        <div><span class="fiche-label">Poste demandé</span><div class="fiche-val" id="fichePoste">—</div></div>
+        <div><span class="fiche-label">Pseudo Discord</span><div class="fiche-val" id="ficheDiscord">—</div></div>
+        <div><span class="fiche-label">Date de naissance</span><div class="fiche-val" id="ficheDdn">—</div></div>
+        <div><span class="fiche-label">Candidature déposée le</span><div class="fiche-val" id="ficheDate">—</div></div>
+      </div>
+      <div class="fg" style="margin-bottom:24px;">
+        <label class="fiche-label">Statut de la candidature</label>
+        <select class="fi stat-sel" id="ficheStatut" onchange="this.className='fi stat-sel '+statClass(this.value)">
+          <option>En attente</option>
+          <option>Entretien</option>
+          <option>Accepté</option>
+          <option>Refusé</option>
+        </select>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="btn-main" style="flex:1;" onclick="saveFicheStatut()">💾 &nbsp;Enregistrer le statut</button>
+        <span class="save-msg" id="ficheSaveMsg">✓ Sauvegardé</span>
+      </div>
+      <button class="btn-main" style="background:transparent;border:1px solid rgba(255,255,255,0.1);color:rgba(242,245,249,0.4);margin-top:10px;" onclick="closeFiche()">Fermer</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
